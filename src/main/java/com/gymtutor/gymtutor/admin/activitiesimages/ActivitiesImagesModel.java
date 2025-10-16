@@ -53,6 +53,7 @@ public class ActivitiesImagesModel {
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
     }
+
     public ActivitiesModel getActivity() {
         return activity;
     }
