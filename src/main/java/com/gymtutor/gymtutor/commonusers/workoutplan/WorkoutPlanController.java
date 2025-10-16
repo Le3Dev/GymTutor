@@ -29,8 +29,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/student/workoutplan")
 public class WorkoutPlanController {
 
-    @Autowired
-    private WorkoutPlanService workoutPlanService;
+    private final WorkoutPlanService workoutPlanService = WorkoutPlanService.getInstance();
 
     @Autowired
     private WorkoutPlanRepository workoutPlanRepository;
@@ -38,6 +37,18 @@ public class WorkoutPlanController {
     @Autowired
     private WorkoutExecutionRecordPerUserService workoutExecutionRecordPerUserService;
 
+    @Autowired
+    public WorkoutPlanController(
+            WorkoutPlanRepository workoutPlanRepository,
+            WorkoutExecutionRecordPerUserService workoutExecutionRecordPerUserService
+    ) {
+        this.workoutPlanRepository = workoutPlanRepository;
+        this.workoutExecutionRecordPerUserService = workoutExecutionRecordPerUserService;
+
+        // Injeta manualmente os repositórios e serviços no Singleton
+        workoutPlanService.setWorkoutPlanRepository(workoutPlanRepository);
+        workoutPlanService.setWorkoutExecutionRecordperUserService(workoutExecutionRecordPerUserService);
+    }
 
     @GetMapping
     public String listWorkoutPlan(
