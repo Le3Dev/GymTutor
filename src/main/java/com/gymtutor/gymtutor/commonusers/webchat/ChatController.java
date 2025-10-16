@@ -146,18 +146,9 @@ public class ChatController {
         messageModel.setConversation(conversation);
         messageRepository.save(messageModel);
 
-        // Envia para o usuário receiver via WebSocket
-        messagingTemplate.convertAndSendToUser(
-                receiver.getUserEmail(),
-                "/queue/messages",
-                new MessageDTO(messageModel)
-        );
-
-        // Envia também para o remetente para atualizar a interface dele
-        messagingTemplate.convertAndSendToUser(
-                messageModel.getSender().getUserEmail(),
-                "/queue/messages",
-                new MessageDTO(messageModel)
-        );
+        //Padrão Observer
+        MessagePublisher publisher = new MessagePublisher();
+        publisher.addObserver(new MessageNotificationObserver(messagingTemplate));
+        publisher.notifyObservers(messageModel);
     }
 }
