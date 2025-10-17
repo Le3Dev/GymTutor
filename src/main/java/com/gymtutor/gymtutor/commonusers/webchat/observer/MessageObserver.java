@@ -1,4 +1,6 @@
-package com.gymtutor.gymtutor.commonusers.webchat;
+package com.gymtutor.gymtutor.commonusers.webchat.observer;
+
+import com.gymtutor.gymtutor.commonusers.webchat.MessageModel;
 
 /**
  * Interface Observer — Define o contrato para todos os observadores

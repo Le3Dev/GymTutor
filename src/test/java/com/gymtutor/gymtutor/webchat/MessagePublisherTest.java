@@ -1,7 +1,7 @@
 package com.gymtutor.gymtutor.webchat;
 import com.gymtutor.gymtutor.commonusers.webchat.MessageModel;
-import com.gymtutor.gymtutor.commonusers.webchat.MessageObserver;
-import com.gymtutor.gymtutor.commonusers.webchat.MessagePublisher;
+import com.gymtutor.gymtutor.commonusers.webchat.observer.MessageObserver;
+import com.gymtutor.gymtutor.commonusers.webchat.observer.MessagePublisher;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 

@@ -1,4 +1,7 @@
-package com.gymtutor.gymtutor.commonusers.webchat;
+package com.gymtutor.gymtutor.commonusers.webchat.observer;
+
+import com.gymtutor.gymtutor.commonusers.webchat.MessageModel;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +11,7 @@ import java.util.List;
  * Responsável por manter a lista de observadores e notificá-los
  * sempre que uma nova mensagem é enviada.
  */
+@Component
 public class MessagePublisher implements MessageSubject {
 
     private final List<MessageObserver> observers = new ArrayList<>();

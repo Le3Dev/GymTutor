@@ -1,5 +1,7 @@
 package com.gymtutor.gymtutor.commonusers.webchat;
 
+import com.gymtutor.gymtutor.commonusers.webchat.observer.MessageNotificationObserver;
+import com.gymtutor.gymtutor.commonusers.webchat.observer.MessagePublisher;
 import com.gymtutor.gymtutor.user.User;
 import com.gymtutor.gymtutor.user.UserRepository;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -22,20 +24,29 @@ public class ChatController {
     private final MessageRepository messageRepository;
     private final ConversationRepository conversationRepository;
     private final UserRepository userRepository;
+    private final MessagePublisher messagePublisher;
+    private final MessageNotificationObserver messageNotificationObserver;
 
     public ChatController(
             SimpMessagingTemplate messagingTemplate,
             MessageRepository messageRepository,
             ConversationRepository conversationRepository,
-            UserRepository userRepository
+            UserRepository userRepository,
+            MessagePublisher messagePublisher,
+            MessageNotificationObserver messageNotificationObserver
     ) {
         this.messagingTemplate = messagingTemplate;
         this.messageRepository = messageRepository;
         this.conversationRepository = conversationRepository;
         this.userRepository = userRepository;
+        this.messagePublisher = messagePublisher;
+        this.messageNotificationObserver = messageNotificationObserver;
+
+        // Registra o observador de notificações
+        this.messagePublisher.addObserver(messageNotificationObserver);
     }
 
-    // Abre página do Chat
+    // Abre a página do chat
     @GetMapping("/chat")
     public String openChatPage(
             @RequestParam(name = "otherUserId", required = false) Integer otherUserId,
@@ -54,27 +65,27 @@ public class ChatController {
         allConversations.addAll(convUser1);
         allConversations.addAll(convUser2);
 
-        // Ordena por data da última mensagem da conversa (desc)
+        // Ordena por data da última mensagem
         allConversations.sort((c1, c2) -> {
             LocalDateTime lastMsg1 = c1.getMessages().stream()
-                    .map(m -> m.getTimestamp())
+                    .map(MessageModel::getTimestamp)
                     .max(LocalDateTime::compareTo)
                     .orElse(LocalDateTime.MIN);
 
             LocalDateTime lastMsg2 = c2.getMessages().stream()
-                    .map(m -> m.getTimestamp())
+                    .map(MessageModel::getTimestamp)
                     .max(LocalDateTime::compareTo)
                     .orElse(LocalDateTime.MIN);
 
-            return lastMsg2.compareTo(lastMsg1); // DESC
+            return lastMsg2.compareTo(lastMsg1);
         });
 
-        // Extrai os contatos (usuários que não são o currentUser)
+        // Extrai contatos ativos
         List<User> activeContacts = allConversations.stream()
                 .map(c -> c.getUser1().equals(currentUser) ? c.getUser2() : c.getUser1())
                 .toList();
 
-        // Lista todos usuários para nova conversa
+        // Todos usuários disponíveis
         List<User> allUsers = userRepository.findAll().stream()
                 .filter(user -> !user.equals(currentUser))
                 .toList();
@@ -87,12 +98,13 @@ public class ChatController {
         model.addAttribute("currentUser", currentUser);
         model.addAttribute("activeContacts", activeContacts);
         model.addAttribute("allUsers", allUsers);
-        model.addAttribute("selectedUser", selectedUser); // ID do usuário do "Enviar Mensagem"
+        model.addAttribute("selectedUser", selectedUser);
         model.addAttribute("body", "webchat/webchat");
+
         return "/fragments/layout";
     }
 
-    // Retorna a conversa entre o usuário logado e outro usuário
+    // Retorna mensagens entre dois usuários
     @GetMapping("/api/conversations/{otherUserId}")
     @ResponseBody
     public List<MessageDTO> getConversation(@PathVariable Integer otherUserId, Principal principal) {
@@ -110,30 +122,27 @@ public class ChatController {
                 .toList();
     }
 
-    // Processa e envia a mensagem via WebSocket
+    // Envia mensagem via WebSocket com Observer
     @MessageMapping("/chat.sendMessage")
     public void sendMessage(@Payload MessageDTO messageDTO, Principal principal) {
-        // Verifica se receiver existe no DTO
         if (messageDTO.getReceiver() == null || messageDTO.getReceiver().getUserId() == null) {
             throw new IllegalArgumentException("Receiver não pode ser nulo");
         }
 
-        // Busca o usuário autenticado (sender)
         User sender = userRepository.findByUserEmail(principal.getName())
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
 
-        // Busca o receiver pelo ID vindo no DTO
         User receiver = userRepository.findById(messageDTO.getReceiver().getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("Receiver com ID " + messageDTO.getReceiver().getUserId() + " não encontrado"));
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Receiver com ID " + messageDTO.getReceiver().getUserId() + " não encontrado"
+                ));
 
-        // Cria a entidade MessageModel
         MessageModel messageModel = new MessageModel();
         messageModel.setContent(messageDTO.getContent());
         messageModel.setTimestamp(LocalDateTime.now());
         messageModel.setSender(sender);
         messageModel.setReceiver(receiver);
 
-        // Busca ou cria conversa
         Conversation conversation = conversationRepository
                 .findBetweenUsers(sender, receiver)
                 .orElseGet(() -> {
@@ -146,9 +155,7 @@ public class ChatController {
         messageModel.setConversation(conversation);
         messageRepository.save(messageModel);
 
-        //Padrão Observer
-        MessagePublisher publisher = new MessagePublisher();
-        publisher.addObserver(new MessageNotificationObserver(messagingTemplate));
-        publisher.notifyObservers(messageModel);
+        // Notifica os observadores (Observer Pattern)
+        messagePublisher.notifyObservers(messageModel);
     }
 }

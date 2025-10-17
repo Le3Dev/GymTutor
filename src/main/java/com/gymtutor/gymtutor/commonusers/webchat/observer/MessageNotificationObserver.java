@@ -1,12 +1,14 @@
-package com.gymtutor.gymtutor.commonusers.webchat;
+package com.gymtutor.gymtutor.commonusers.webchat.observer;
 
+import com.gymtutor.gymtutor.commonusers.webchat.MessageDTO;
+import com.gymtutor.gymtutor.commonusers.webchat.MessageModel;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.stereotype.Component;
 
 /**
- * Classe ConcreteObserver — Implementa a interface Observer.
- * Responsável por enviar a mensagem via WebSocket sempre que
- * for notificado de uma nova mensagem.
+ * Observer concreto — reage ao envio de mensagens.
  */
+@Component
 public class MessageNotificationObserver implements MessageObserver {
 
     private final SimpMessagingTemplate messagingTemplate;
@@ -19,14 +21,13 @@ public class MessageNotificationObserver implements MessageObserver {
     public void onMessageSent(MessageModel messageModel) {
         MessageDTO dto = new MessageDTO(messageModel);
 
-        // Envia ao destinatário
+        // Envia para o destinatário e o remetente via WebSocket
         messagingTemplate.convertAndSendToUser(
                 messageModel.getReceiver().getUserEmail(),
                 "/queue/messages",
                 dto
         );
 
-        // Envia também ao remetente
         messagingTemplate.convertAndSendToUser(
                 messageModel.getSender().getUserEmail(),
                 "/queue/messages",
