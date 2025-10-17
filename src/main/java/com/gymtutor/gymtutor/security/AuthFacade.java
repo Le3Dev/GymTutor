@@ -38,11 +38,6 @@ public class AuthFacade {
         User user = userRepository.findByUserEmail(dto.getUserEmail())
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
         userService.enableUser(user);
-        // Aqui você poderia chamar um NotificationService futuramente
     }
 
-    // --- LOGIN (carregando o usuário) ---
-    public CustomUserDetails autenticar(String email) {
-        return (CustomUserDetails) customUserDetailsService.loadUserByUsername(email);
-    }
 }

@@ -80,10 +80,6 @@ public class AuthController {
         });
     }
 
-    // ======================================================
-    // BLOCO DE TRATAMENTO DE EXCEÇÕES (agora dentro da classe)
-    // ======================================================
-
     private String handleRequest(
             RedirectAttributes redirectAttributes,
             Model model,
