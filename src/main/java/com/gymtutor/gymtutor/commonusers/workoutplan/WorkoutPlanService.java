@@ -14,8 +14,6 @@ import com.gymtutor.gymtutor.user.User;
 import com.gymtutor.gymtutor.user.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import org.hibernate.validator.internal.util.stereotypes.Lazy;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -24,64 +22,72 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-// Serviço para gerenciar a lógica de negócios relacionada a entidades WorkoutPlan (WorkoutPlanService),
-// incluindo operações de criação, atualização, exclusão e recuperação de entidades,
-// além de realizar validações de permissão de acesso para o usuário logado.
 @Service
 public class WorkoutPlanService {
 
-    @Autowired
+    private static volatile WorkoutPlanService instance;
+
     private WorkoutPlanRepository workoutPlanRepository;
-
-    @Autowired
-    @Lazy
     private WorkoutExecutionRecordPerUserService workoutExecutionRecordperUserService;
-
-    @Autowired
     private WorkoutPlanPerUserRepository workoutPlanPerUserRepository;
 
+    private WorkoutPlanService() {}
+
+    public static WorkoutPlanService getInstance() {
+        if (instance == null) {
+            synchronized (WorkoutPlanService.class) {
+                if (instance == null) {
+                    instance = new WorkoutPlanService();
+                }
+            }
+        }
+        return instance;
+    }
+
+
+    public void setWorkoutPlanRepository(WorkoutPlanRepository workoutPlanRepository) {
+        this.workoutPlanRepository = workoutPlanRepository;
+    }
+
+    public void setWorkoutExecutionRecordperUserService(WorkoutExecutionRecordPerUserService workoutExecutionRecordperUserService) {
+        this.workoutExecutionRecordperUserService = workoutExecutionRecordperUserService;
+    }
+
+    public void setWorkoutPlanPerUserRepository(WorkoutPlanPerUserRepository workoutPlanPerUserRepository) {
+        this.workoutPlanPerUserRepository = workoutPlanPerUserRepository;
+    }
 
     public void createWorkoutPlan(WorkoutPlanModel workoutPlanModel, CustomUserDetails loggedUser) {
         User user = loggedUser.getUser();
         workoutPlanModel.setUser(user);
         workoutPlanRepository.save(workoutPlanModel);
 
-        // Inicia o acompanhamento de exercicios do aluno
         workoutExecutionRecordperUserService.createInitialCompletedStatusForPlanWhenMeStart(workoutPlanModel, user);
         workoutExecutionRecordperUserService.createInitialExecutionsForPlanWhenMeStart(workoutPlanModel, user);
     }
 
-    public WorkoutPlanModel findById(int workoutPlanId){
+    public WorkoutPlanModel findById(int workoutPlanId) {
         Optional<WorkoutPlanModel> optionalWorkoutPlanModel = workoutPlanRepository.findById(workoutPlanId);
         return optionalWorkoutPlanModel.orElseThrow(() -> new RuntimeException("workoutPlan not found with id " + workoutPlanId));
     }
 
-    // Retorna as fichas que foram associadas à aquele usuario
     public List<WorkoutPlanModel> findAllByCopiedForUserUserId(int userId) {
         return workoutPlanRepository.findAllByCopiedForUserUserId(userId);
     }
 
-    public void updateWorkoutPlan(WorkoutPlanModel workoutPlanModel, int workoutPlanId){
-
-        // Busca a ficha de treino existente pelo ID
+    public void updateWorkoutPlan(WorkoutPlanModel workoutPlanModel, int workoutPlanId) {
         Optional<WorkoutPlanModel> existingWorkoutPlanModel = workoutPlanRepository.findById(workoutPlanId);
 
-        // Se a ficha de treino for encontrada, atualiza os dados
-        if (existingWorkoutPlanModel.isPresent()){
+        if (existingWorkoutPlanModel.isPresent()) {
             WorkoutPlanModel workoutPlan = existingWorkoutPlanModel.get();
-
             workoutPlan.setWorkoutPlanName(workoutPlanModel.getWorkoutPlanName());
             workoutPlan.setWorkoutPlanDescription(workoutPlanModel.getWorkoutPlanDescription());
             workoutPlan.setTargetDaysToComplete(workoutPlanModel.getTargetDaysToComplete());
-
-
-            // Salva o treino atualizada no banco de dados
             workoutPlanRepository.save(workoutPlan);
-
         }
     }
 
-    public void deleteWorkoutPlan(int workoutPlanId){
+    public void deleteWorkoutPlan(int workoutPlanId) {
         workoutPlanRepository.deleteById(workoutPlanId);
     }
 
@@ -97,7 +103,6 @@ public class WorkoutPlanService {
             link.setWorkoutPlanPerUserId(id);
             link.setWorkoutPlan(workoutPlan);
             link.setUser(user);
-
             workoutPlanPerUserRepository.save(link);
         }
     }
@@ -121,14 +126,10 @@ public class WorkoutPlanService {
         id.setUserId(user.getUserId());
 
         Optional<WorkoutPlanPerUserModel> existingLink = workoutPlanPerUserRepository.findByWorkoutPlanPerUserId(id);
-        if (existingLink.isPresent()) {
-            workoutPlanPerUserRepository.delete(existingLink.get());
-        } else {
-            System.out.println("Vínculo não encontrado.");
-        }
+        existingLink.ifPresent(workoutPlanPerUserRepository::delete);
     }
 
-    public void activitiesSort(Set<WorkoutPlanModel> allPlans){
+    public void activitiesSort(Set<WorkoutPlanModel> allPlans) {
         for (WorkoutPlanModel plan : allPlans) {
             for (WorkoutPerWorkoutPlanModel workoutPerPlan : plan.getWorkoutPerWorkoutPlans()) {
                 WorkoutModel workout = workoutPerPlan.getWorkout();
@@ -142,5 +143,4 @@ public class WorkoutPlanService {
             }
         }
     }
-
 }
