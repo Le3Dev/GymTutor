@@ -2,6 +2,7 @@ package com.gymtutor.gymtutor.commonusers.webchat;
 
 import com.gymtutor.gymtutor.user.User;
 import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 

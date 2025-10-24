@@ -15,26 +15,31 @@ import java.util.Arrays;
 @Component
 public class DataLoader implements CommandLineRunner {
 
+    private static DataLoader instancia; // instância única da classe
+
     private final RoleRepository roleRepository;
     private final UserService userService;
     private final MuscularGroupRepository muscularGroupRepository;
 
-    // Injeção de dependências
-    public DataLoader(RoleRepository roleRepository, UserService userService, MuscularGroupRepository muscularGroupRepository) {
+    // Construtor privado (impede criação manual fora da classe)
+    private DataLoader(RoleRepository roleRepository, UserService userService, MuscularGroupRepository muscularGroupRepository) {
         this.roleRepository = roleRepository;
         this.userService = userService;
         this.muscularGroupRepository = muscularGroupRepository;
+        instancia = this; // armazena a instância criada pelo Spring
     }
 
-    // Metodo executado ao iniciar a aplicação
+    // Metodo de acesso à instância única
+    public static DataLoader getInstance() {
+        return instancia;
+    }
+
     @Override
-    public void run(String... args) throws Exception {
-        // Verifica se as roles já existem no banco de dados
-        // Se não existirem, cria as roles padrão ADMIN, STUDENT e PERSONAL
+    public void run(String... args) {
         if (roleRepository.count() == 0) {
-            roleRepository.save(new Role(RoleName.ADMIN));    // Cria a role ADMIN
-            roleRepository.save(new Role(RoleName.STUDENT));  // Cria a role STUDENT
-            roleRepository.save(new Role(RoleName.PERSONAL)); // Cria a role PERSONAL
+            roleRepository.save(new Role(RoleName.ADMIN));
+            roleRepository.save(new Role(RoleName.STUDENT));
+            roleRepository.save(new Role(RoleName.PERSONAL));
         }
 
         if (muscularGroupRepository.count() == 0) {
@@ -43,7 +48,6 @@ public class DataLoader implements CommandLineRunner {
                     .forEach(muscularGroupRepository::save);
         }
 
-        // Chama o Metodo criar administrador do UserService para criar o usuário administrador
         userService.createAdminUser();
     }
 }
