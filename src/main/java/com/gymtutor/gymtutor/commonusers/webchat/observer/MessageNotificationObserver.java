@@ -1,8 +1,7 @@
 package com.gymtutor.gymtutor.commonusers.webchat.observer;
 
-import com.gymtutor.gymtutor.commonusers.webchat.MessageDTO;
 import com.gymtutor.gymtutor.commonusers.webchat.MessageModel;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
+import com.gymtutor.gymtutor.commonusers.webchat.WebSocketSender;
 import org.springframework.stereotype.Component;
 
 /**
@@ -11,27 +10,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class MessageNotificationObserver implements MessageObserver {
 
-    private final SimpMessagingTemplate messagingTemplate;
+    private final WebSocketSender webSocketSender;
 
-    public MessageNotificationObserver(SimpMessagingTemplate messagingTemplate) {
-        this.messagingTemplate = messagingTemplate;
+    public MessageNotificationObserver(WebSocketSender webSocketSender) {
+        this.webSocketSender = webSocketSender;
     }
 
     @Override
     public void onMessageSent(MessageModel messageModel) {
-        MessageDTO dto = new MessageDTO(messageModel);
-
-        // Envia para o destinatário e o remetente via WebSocket
-        messagingTemplate.convertAndSendToUser(
-                messageModel.getReceiver().getUserEmail(),
-                "/queue/messages",
-                dto
-        );
-
-        messagingTemplate.convertAndSendToUser(
-                messageModel.getSender().getUserEmail(),
-                "/queue/messages",
-                dto
-        );
+        // Envia a mensagem via WebSocket diretamente
+        webSocketSender.send(messageModel);
     }
 }
