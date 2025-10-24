@@ -26,6 +26,10 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-websocket")
 	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
 
+    /* ───────── Banco Azure MYSQL ───────── */
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("com.microsoft.sqlserver:mssql-jdbc:12.2.0.jre11")
+
 	/* Segurança + Thymeleaf */
 	implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
 
@@ -33,7 +37,7 @@ dependencies {
 	implementation("jakarta.platform:jakarta.jakartaee-api:10.0.0")
 
 	/* Banco */
-	runtimeOnly("com.mysql:mysql-connector-j")
+	// runtimeOnly("com.mysql:mysql-connector-j")
 
 	/* Testes */
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
