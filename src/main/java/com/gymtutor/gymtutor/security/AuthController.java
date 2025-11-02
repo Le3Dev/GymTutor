@@ -48,7 +48,7 @@ public class AuthController {
 
         return handleRequest(redirectAttributes, model, "registration", dto, () -> {
             authFacade.registrarUsuario(dto);
-            redirectAttributes.addFlashAttribute("successMessage", "Conta criada com sucesso!");
+            redirectAttributes.addFlashAttribute("successMessage", "Conta criada com sucesso!!!");
             return "redirect:/login";
         });
     }
