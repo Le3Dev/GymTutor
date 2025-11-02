@@ -26,10 +26,6 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-websocket")
 	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
 
-    /* ───────── Banco Azure MYSQL ───────── */
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("com.microsoft.sqlserver:mssql-jdbc:12.2.0.jre11")
-
 	/* Segurança + Thymeleaf */
 	implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
 
@@ -46,6 +42,9 @@ dependencies {
 
 	/* DevTools - Ferramentas para desenvolvimento */
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
+
+	runtimeOnly("com.mysql:mysql-connector-j")
+
 }
 
 // Testes com JUnit Platform
