@@ -103,7 +103,7 @@ class ActivitiesVideosCreateControllerTest {
                         org.hamcrest.Matchers.hasProperty("fieldErrors",
                                 org.hamcrest.Matchers.hasItem(
                                         org.hamcrest.Matchers.hasProperty("defaultMessage",
-                                                org.hamcrest.Matchers.is("O nome do video nao pode esta vazio"))
+                                                org.hamcrest.Matchers.is("O nome do vídeo não pode estar vazio"))
                 ))));
     }
 

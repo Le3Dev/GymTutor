@@ -14,7 +14,7 @@ public class ActivitiesVideosModel {
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
     private int videoId;
 
-    @NotBlank(message = "O nome do video nao pode esta vazio")
+    @NotBlank(message = "O nome do vídeo não pode estar vazio")
     @Size(min = 3, max = 100, message = "O nome do vídeo deve ter entre 3 e 100 caracteres.")
     private String videoName;
 
