@@ -125,12 +125,13 @@ class WorkoutControllerEditTest {
                 ));
     }
 
+
     @Test
-    @DisplayName("CT06 – Caso Inválido – Descanso Abaixo do Limite Inferior")
+    @DisplayName("CT06 – Caso Inválido – Tempo de Descanso Vazio")
     void ct06() throws Exception {
         mockMvc.perform(post("/student/workout/{workoutId}/edit", WORKOUT_ID)
                         .param("workoutName", "Treino A")
-                        .param("restTime", "123456789")
+                        .param("restTime", "")
                         .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeHasFieldErrors("workoutModel", "restTime"))

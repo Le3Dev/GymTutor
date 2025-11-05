@@ -123,11 +123,13 @@ class WorkoutControllerCreateTest {
     }
 
     @Test
-    @DisplayName("CT06 – Caso Inválido – Descanso Abaixo do Limite Inferior")
+    @DisplayName("CT06 – Caso Inválido – Tempo de Descanso Vazio")
     void ct06() throws Exception {
+        doNothing().when(workoutService).createWorkout(any(), any(CustomUserDetails.class));
+
         mockMvc.perform(post("/student/workout")
-                        .param("workoutName", "Treino A")
-                        .param("restTime", "123456789")
+                        .param("workoutName", "abc")
+                        .param("restTime", "")
                         .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeHasFieldErrors("workoutModel", "restTime"))
