@@ -75,6 +75,10 @@ class PersonalCrefDTOTest {
 
         Set<ConstraintViolation<PersonalCrefDTO>> violations = validator.validate(dto);
         assertFalse(violations.isEmpty(), "Deve haver erro de validação para CREF vazio");
+
+        boolean hasExpectedMessage = violations.stream()
+                .anyMatch(v -> v.getMessage().equals("O CREF é obrigatório."));
+        assertTrue(hasExpectedMessage, "Mensagem de erro deve ser 'O CREF é obrigatório.'");
     }
 
     @Test
@@ -86,6 +90,12 @@ class PersonalCrefDTOTest {
 
         Set<ConstraintViolation<PersonalCrefDTO>> violations = validator.validate(dto);
         assertFalse(violations.isEmpty(), "Deve haver erro de validação para CREF abaixo do limite inferior");
+
+        boolean hasExpectedMessage = violations.stream()
+                .anyMatch(v -> v.getMessage().equals(
+                        "O CREF deve conter de 1 a 6 dígitos seguidos de um hífen e uma letra (G, P ou C). Exemplo: 123456-G"
+                ));
+        assertTrue(hasExpectedMessage, "Mensagem de erro deve ser referente ao formato do CREF");
     }
 
     @Test
@@ -97,6 +107,12 @@ class PersonalCrefDTOTest {
 
         Set<ConstraintViolation<PersonalCrefDTO>> violations = validator.validate(dto);
         assertFalse(violations.isEmpty(), "Deve haver erro de validação para CREF acima do limite superior");
+
+        boolean hasExpectedMessage = violations.stream()
+                .anyMatch(v -> v.getMessage().equals(
+                        "O CREF deve conter de 1 a 6 dígitos seguidos de um hífen e uma letra (G, P ou C). Exemplo: 123456-G"
+                ));
+        assertTrue(hasExpectedMessage, "Mensagem de erro deve ser referente ao formato do CREF");
     }
 
     @Test
@@ -108,6 +124,12 @@ class PersonalCrefDTOTest {
 
         Set<ConstraintViolation<PersonalCrefDTO>> violations = validator.validate(dto);
         assertFalse(violations.isEmpty(), "Deve haver erro de validação para CREF sem o hífen");
+
+        boolean hasExpectedMessage = violations.stream()
+                .anyMatch(v -> v.getMessage().equals(
+                        "O CREF deve conter de 1 a 6 dígitos seguidos de um hífen e uma letra (G, P ou C). Exemplo: 123456-G"
+                ));
+        assertTrue(hasExpectedMessage, "Mensagem de erro deve ser referente ao formato do CREF");
     }
 
     @Test
@@ -119,6 +141,12 @@ class PersonalCrefDTOTest {
 
         Set<ConstraintViolation<PersonalCrefDTO>> violations = validator.validate(dto);
         assertFalse(violations.isEmpty(), "Deve haver erro de validação para CREF com 2 hifens");
+
+        boolean hasExpectedMessage = violations.stream()
+                .anyMatch(v -> v.getMessage().equals(
+                        "O CREF deve conter de 1 a 6 dígitos seguidos de um hífen e uma letra (G, P ou C). Exemplo: 123456-G"
+                ));
+        assertTrue(hasExpectedMessage, "Mensagem de erro deve ser referente ao formato do CREF");
     }
 
     @Test
@@ -130,6 +158,12 @@ class PersonalCrefDTOTest {
 
         Set<ConstraintViolation<PersonalCrefDTO>> violations = validator.validate(dto);
         assertFalse(violations.isEmpty(), "Deve haver erro de validação para CREF sem letra");
+
+        boolean hasExpectedMessage = violations.stream()
+                .anyMatch(v -> v.getMessage().equals(
+                        "O CREF deve conter de 1 a 6 dígitos seguidos de um hífen e uma letra (G, P ou C). Exemplo: 123456-G"
+                ));
+        assertTrue(hasExpectedMessage, "Mensagem de erro deve ser referente ao formato do CREF");
     }
 
     @Test
@@ -141,6 +175,12 @@ class PersonalCrefDTOTest {
 
         Set<ConstraintViolation<PersonalCrefDTO>> violations = validator.validate(dto);
         assertFalse(violations.isEmpty(), "Deve haver erro de validação para CREF com 2 letras");
+
+        boolean hasExpectedMessage = violations.stream()
+                .anyMatch(v -> v.getMessage().equals(
+                        "O CREF deve conter de 1 a 6 dígitos seguidos de um hífen e uma letra (G, P ou C). Exemplo: 123456-G"
+                ));
+        assertTrue(hasExpectedMessage, "Mensagem de erro deve ser referente ao formato do CREF");
     }
 
     @Test
@@ -152,6 +192,12 @@ class PersonalCrefDTOTest {
 
         Set<ConstraintViolation<PersonalCrefDTO>> violations = validator.validate(dto);
         assertFalse(violations.isEmpty(), "Deve haver erro de validação para CREF com letra inválida");
+
+        boolean hasExpectedMessage = violations.stream()
+                .anyMatch(v -> v.getMessage().equals(
+                        "O CREF deve conter de 1 a 6 dígitos seguidos de um hífen e uma letra (G, P ou C). Exemplo: 123456-G"
+                ));
+        assertTrue(hasExpectedMessage, "Mensagem de erro deve ser referente ao formato do CREF");
     }
 
     @Test
@@ -163,6 +209,12 @@ class PersonalCrefDTOTest {
 
         Set<ConstraintViolation<PersonalCrefDTO>> violations = validator.validate(dto);
         assertFalse(violations.isEmpty(), "Deve haver erro de validação para CREF com letra inválida");
+
+        boolean hasExpectedMessage = violations.stream()
+                .anyMatch(v -> v.getMessage().equals(
+                        "O CREF deve conter de 1 a 6 dígitos seguidos de um hífen e uma letra (G, P ou C). Exemplo: 123456-G"
+                ));
+        assertTrue(hasExpectedMessage, "Mensagem de erro deve ser referente ao formato do CREF");
     }
 
     @Test
@@ -174,6 +226,12 @@ class PersonalCrefDTOTest {
 
         Set<ConstraintViolation<PersonalCrefDTO>> violations = validator.validate(dto);
         assertFalse(violations.isEmpty(), "Deve haver erro de validação para CREF com sequência incorreta");
+
+        boolean hasExpectedMessage = violations.stream()
+                .anyMatch(v -> v.getMessage().equals(
+                        "O CREF deve conter de 1 a 6 dígitos seguidos de um hífen e uma letra (G, P ou C). Exemplo: 123456-G"
+                ));
+        assertTrue(hasExpectedMessage, "Mensagem de erro deve ser referente ao formato do CREF");
     }
 
     @Test
@@ -185,6 +243,12 @@ class PersonalCrefDTOTest {
 
         Set<ConstraintViolation<PersonalCrefDTO>> violations = validator.validate(dto);
         assertFalse(violations.isEmpty(), "Deve haver erro de validação para CREF com sequência incorreta");
+
+        boolean hasExpectedMessage = violations.stream()
+                .anyMatch(v -> v.getMessage().equals(
+                        "O CREF deve conter de 1 a 6 dígitos seguidos de um hífen e uma letra (G, P ou C). Exemplo: 123456-G"
+                ));
+        assertTrue(hasExpectedMessage, "Mensagem de erro deve ser referente ao formato do CREF");
     }
 
     @Test
@@ -196,6 +260,12 @@ class PersonalCrefDTOTest {
 
         Set<ConstraintViolation<PersonalCrefDTO>> violations = validator.validate(dto);
         assertFalse(violations.isEmpty(), "Deve haver erro de validação para CREF com sequência incorreta");
+
+        boolean hasExpectedMessage = violations.stream()
+                .anyMatch(v -> v.getMessage().equals(
+                        "O CREF deve conter de 1 a 6 dígitos seguidos de um hífen e uma letra (G, P ou C). Exemplo: 123456-G"
+                ));
+        assertTrue(hasExpectedMessage, "Mensagem de erro deve ser referente ao formato do CREF");
     }
 
     @Test
@@ -207,6 +277,12 @@ class PersonalCrefDTOTest {
 
         Set<ConstraintViolation<PersonalCrefDTO>> violations = validator.validate(dto);
         assertFalse(violations.isEmpty(), "Deve haver erro de validação para CREF com sequência incorreta");
+
+        boolean hasExpectedMessage = violations.stream()
+                .anyMatch(v -> v.getMessage().equals(
+                        "O CREF deve conter de 1 a 6 dígitos seguidos de um hífen e uma letra (G, P ou C). Exemplo: 123456-G"
+                ));
+        assertTrue(hasExpectedMessage, "Mensagem de erro deve ser referente ao formato do CREF");
     }
 
     @Test
@@ -218,6 +294,12 @@ class PersonalCrefDTOTest {
 
         Set<ConstraintViolation<PersonalCrefDTO>> violations = validator.validate(dto);
         assertFalse(violations.isEmpty(), "Deve haver erro de validação para CREF com caracter especial");
+
+        boolean hasExpectedMessage = violations.stream()
+                .anyMatch(v -> v.getMessage().equals(
+                        "O CREF deve conter de 1 a 6 dígitos seguidos de um hífen e uma letra (G, P ou C). Exemplo: 123456-G"
+                ));
+        assertTrue(hasExpectedMessage, "Mensagem de erro deve ser referente ao formato do CREF");
     }
 
 }
