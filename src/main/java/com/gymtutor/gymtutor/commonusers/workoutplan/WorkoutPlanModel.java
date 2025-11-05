@@ -24,7 +24,7 @@ public class WorkoutPlanModel {
     @Size(min = 2, max=10 , message = "Este campo deve ter entre 2 e 10 caracteres.")
     private String workoutPlanName;
 
-    @NotBlank(message = "Nome não pode estar vazio!")
+    @NotBlank(message = "Descrição não pode estar vazia!")
     @Size(min = 10, max=200 , message = "Este campo deve ter entre 10 e 200 caracteres.")
     private String workoutPlanDescription;
 
