@@ -188,7 +188,17 @@ class AuthControllerTest {
                 .andExpect(view().name("registration"))
                 .andExpect(model().attributeHasFieldErrors("userRegistrationDTO", "userName"))
                 .andExpect(model().attributeExists("errorMessage"))
-                .andExpect(model().attribute("errorMessage", "Há erros no formulário!"));
+                .andExpect(model().attribute("errorMessage", "Há erros no formulário!"))
+                .andExpect(model().attributeHasFieldErrors("userRegistrationDTO", "userName"))
+                .andExpect(model().attribute(
+                        "org.springframework.validation.BindingResult.userRegistrationDTO",
+                        org.hamcrest.Matchers.hasProperty("fieldErrors",
+                                org.hamcrest.Matchers.hasItem(
+                                        org.hamcrest.Matchers.hasProperty("defaultMessage",
+                                                org.hamcrest.Matchers.is("O nome deve ter pelo menos 3 caracteres."))
+                                )
+                        )
+                ));
     }
 
     @Test
@@ -287,7 +297,16 @@ class AuthControllerTest {
                 .andExpect(view().name("registration"))
                 .andExpect(model().attributeHasFieldErrors("userRegistrationDTO", "confirmEmail"))
                 .andExpect(model().attributeExists("errorMessage"))
-                .andExpect(model().attribute("errorMessage", "Há erros no formulário!"));
+                .andExpect(model().attribute("errorMessage", "Há erros no formulário!"))
+                .andExpect(model().attribute(
+                        "org.springframework.validation.BindingResult.userRegistrationDTO",
+                        org.hamcrest.Matchers.hasProperty("fieldErrors",
+                                org.hamcrest.Matchers.hasItem(
+                                        org.hamcrest.Matchers.hasProperty("defaultMessage",
+                                                org.hamcrest.Matchers.is("Os e-mails não coincidem."))
+                                )
+                        )
+                ));
     }
 
     @Test
@@ -305,7 +324,16 @@ class AuthControllerTest {
                 .andExpect(view().name("registration"))
                 .andExpect(model().attributeHasFieldErrors("userRegistrationDTO", "userPassword"))
                 .andExpect(model().attributeExists("errorMessage"))
-                .andExpect(model().attribute("errorMessage", "Há erros no formulário!"));
+                .andExpect(model().attribute("errorMessage", "Há erros no formulário!"))
+                .andExpect(model().attribute(
+                        "org.springframework.validation.BindingResult.userRegistrationDTO",
+                        org.hamcrest.Matchers.hasProperty("fieldErrors",
+                                org.hamcrest.Matchers.hasItem(
+                                        org.hamcrest.Matchers.hasProperty("defaultMessage",
+                                                org.hamcrest.Matchers.is("A senha deve ter pelo menos 5 caracteres."))
+                                )
+                        )
+                ));
     }
 
     @Test
@@ -323,7 +351,16 @@ class AuthControllerTest {
                 .andExpect(view().name("registration"))
                 .andExpect(model().attributeHasFieldErrors("userRegistrationDTO", "confirmPassword"))
                 .andExpect(model().attributeExists("errorMessage"))
-                .andExpect(model().attribute("errorMessage", "Há erros no formulário!"));
+                .andExpect(model().attribute("errorMessage", "Há erros no formulário!"))
+                .andExpect(model().attribute(
+                        "org.springframework.validation.BindingResult.userRegistrationDTO",
+                        org.hamcrest.Matchers.hasProperty("fieldErrors",
+                                org.hamcrest.Matchers.hasItem(
+                                        org.hamcrest.Matchers.hasProperty("defaultMessage",
+                                                org.hamcrest.Matchers.is("As senhas não coincidem."))
+                                )
+                        )
+                ));
     }
 
     // Este teste não é validado pelo back, apenas pelo front
@@ -361,7 +398,17 @@ class AuthControllerTest {
                 .andExpect(model().attributeHasFieldErrors("userRegistrationDTO", "userCpf"))
                 .andExpect(model().attributeHasFieldErrorCode("userRegistrationDTO", "userCpf", "CPF"))
                 .andExpect(model().attributeExists("errorMessage"))
-                .andExpect(model().attribute("errorMessage", "Há erros no formulário!"));
+                .andExpect(model().attribute("errorMessage", "Há erros no formulário!"))
+                .andExpect(model().attribute(
+                        "org.springframework.validation.BindingResult.userRegistrationDTO",
+                        org.hamcrest.Matchers.hasProperty("fieldErrors",
+                                org.hamcrest.Matchers.hasItem(
+                                        org.hamcrest.Matchers.hasProperty("defaultMessage",
+                                                org.hamcrest.Matchers.is("CPF inválido."))
+                                )
+                        )
+                ));
+
     }
 
     @Test
@@ -380,7 +427,16 @@ class AuthControllerTest {
                 .andExpect(model().attributeHasFieldErrors("userRegistrationDTO", "userCpf"))
                 .andExpect(model().attributeHasFieldErrorCode("userRegistrationDTO", "userCpf", "CPF"))
                 .andExpect(model().attributeExists("errorMessage"))
-                .andExpect(model().attribute("errorMessage", "Há erros no formulário!"));
+                .andExpect(model().attribute("errorMessage", "Há erros no formulário!"))
+                .andExpect(model().attribute(
+                        "org.springframework.validation.BindingResult.userRegistrationDTO",
+                        org.hamcrest.Matchers.hasProperty("fieldErrors",
+                                org.hamcrest.Matchers.hasItem(
+                                        org.hamcrest.Matchers.hasProperty("defaultMessage",
+                                                org.hamcrest.Matchers.is("CPF inválido."))
+                                )
+                        )
+                ));
     }
 
     @Test
@@ -399,7 +455,16 @@ class AuthControllerTest {
                 .andExpect(model().attributeHasFieldErrors("userRegistrationDTO", "userCpf"))
                 .andExpect(model().attributeHasFieldErrorCode("userRegistrationDTO", "userCpf", "CPF"))
                 .andExpect(model().attributeExists("errorMessage"))
-                .andExpect(model().attribute("errorMessage", "Há erros no formulário!"));
+                .andExpect(model().attribute("errorMessage", "Há erros no formulário!"))
+                .andExpect(model().attribute(
+                        "org.springframework.validation.BindingResult.userRegistrationDTO",
+                        org.hamcrest.Matchers.hasProperty("fieldErrors",
+                                org.hamcrest.Matchers.hasItem(
+                                        org.hamcrest.Matchers.hasProperty("defaultMessage",
+                                                org.hamcrest.Matchers.is("CPF inválido."))
+                                )
+                        )
+                ));
     }
 
     @Test
@@ -418,7 +483,16 @@ class AuthControllerTest {
                 .andExpect(model().attributeHasFieldErrors("userRegistrationDTO", "userCpf"))
                 .andExpect(model().attributeHasFieldErrorCode("userRegistrationDTO", "userCpf", "CPF"))
                 .andExpect(model().attributeExists("errorMessage"))
-                .andExpect(model().attribute("errorMessage", "Há erros no formulário!"));
+                .andExpect(model().attribute("errorMessage", "Há erros no formulário!"))
+                .andExpect(model().attribute(
+                        "org.springframework.validation.BindingResult.userRegistrationDTO",
+                        org.hamcrest.Matchers.hasProperty("fieldErrors",
+                                org.hamcrest.Matchers.hasItem(
+                                        org.hamcrest.Matchers.hasProperty("defaultMessage",
+                                                org.hamcrest.Matchers.is("CPF inválido."))
+                                )
+                        )
+                ));
     }
 
     @Test
@@ -437,6 +511,15 @@ class AuthControllerTest {
                 .andExpect(model().attributeHasFieldErrors("userRegistrationDTO", "userCpf"))
                 .andExpect(model().attributeHasFieldErrorCode("userRegistrationDTO", "userCpf", "CPF"))
                 .andExpect(model().attributeExists("errorMessage"))
-                .andExpect(model().attribute("errorMessage", "Há erros no formulário!"));
+                .andExpect(model().attribute("errorMessage", "Há erros no formulário!"))
+                .andExpect(model().attribute(
+                        "org.springframework.validation.BindingResult.userRegistrationDTO",
+                        org.hamcrest.Matchers.hasProperty("fieldErrors",
+                                org.hamcrest.Matchers.hasItem(
+                                        org.hamcrest.Matchers.hasProperty("defaultMessage",
+                                                org.hamcrest.Matchers.is("CPF inválido."))
+                                )
+                        )
+                ));
     }
 }
