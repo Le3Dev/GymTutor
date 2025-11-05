@@ -139,7 +139,7 @@ class ActivitiesVideosEditControllerTest {
                         org.hamcrest.Matchers.hasProperty("fieldErrors",
                                 org.hamcrest.Matchers.hasItem(
                                         org.hamcrest.Matchers.hasProperty("defaultMessage",
-                                                org.hamcrest.Matchers.is("O nome do vídeo deve ter entre 3 e 100 caracteres."))
+                                                org.hamcrest.Matchers.is("Nome deve ter entre 3 e 100 caracteres."))
                                 ))));
     }
 
@@ -156,7 +156,7 @@ class ActivitiesVideosEditControllerTest {
                         org.hamcrest.Matchers.hasProperty("fieldErrors",
                                 org.hamcrest.Matchers.hasItem(
                                         org.hamcrest.Matchers.hasProperty("defaultMessage",
-                                                org.hamcrest.Matchers.is("O nome do vídeo deve ter entre 3 e 100 caracteres."))
+                                                org.hamcrest.Matchers.is("Nome deve ter entre 3 e 100 caracteres."))
                 ))));
     }
 

@@ -15,7 +15,7 @@ public class ActivitiesVideosModel {
     private int videoId;
 
     @NotBlank(message = "O nome do vídeo não pode estar vazio")
-    @Size(min = 3, max = 100, message = "O nome do vídeo deve ter entre 3 e 100 caracteres.")
+    @Size(min = 3, max = 100, message = "Nome deve ter entre 3 e 100 caracteres.")
     private String videoName;
 
     @NotBlank(message = "O link do vídeo não pode estar vazio!")
