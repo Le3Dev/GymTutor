@@ -56,7 +56,7 @@ public class ActivitiesVideosController {
 
         return  handleRequest(redirectAttributes, model, "admin/activities/videos/new", activitiesVideosModel, activitiesId, ()-> {
             videosService.createVideo(activitiesVideosModel, activitiesId);
-            redirectAttributes.addFlashAttribute("successMessage","Video adicionado com sucesso!!!");
+            redirectAttributes.addFlashAttribute("successMessage","Vídeo adicionado com sucesso!!!");
             return "redirect:/admin/activities/"+activitiesId+"/videos";
         });
     }

@@ -45,7 +45,7 @@ class ActivitiesVideosCreateControllerTest {
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/admin/activities/1/videos"))
-                .andExpect(flash().attribute("successMessage", "Video adicionado com sucesso!!!"));
+                .andExpect(flash().attribute("successMessage", "Vídeo adicionado com sucesso!!!"));
     }
 
     @Test
@@ -59,7 +59,7 @@ class ActivitiesVideosCreateControllerTest {
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/admin/activities/1/videos"))
-                .andExpect(flash().attribute("successMessage", "Video adicionado com sucesso!!!"));
+                .andExpect(flash().attribute("successMessage", "Vídeo adicionado com sucesso!!!"));
     }
 
     @Test
@@ -73,7 +73,7 @@ class ActivitiesVideosCreateControllerTest {
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/admin/activities/1/videos"))
-                .andExpect(flash().attribute("successMessage", "Video adicionado com sucesso!!!"));
+                .andExpect(flash().attribute("successMessage", "Vídeo adicionado com sucesso!!!"));
     }
 
     @Test
@@ -87,7 +87,7 @@ class ActivitiesVideosCreateControllerTest {
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/admin/activities/1/videos"))
-                .andExpect(flash().attribute("successMessage", "Video adicionado com sucesso!!!"));
+                .andExpect(flash().attribute("successMessage", "Vídeo adicionado com sucesso!!!"));
     }
 
     @Test
