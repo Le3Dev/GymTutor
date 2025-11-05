@@ -6,6 +6,7 @@ import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ActivitiesImagesModelTest {
@@ -15,6 +16,11 @@ class ActivitiesImagesModelTest {
     ActivitiesImagesModelTest() {
         validator = new LocalValidatorFactoryBean();
         validator.afterPropertiesSet();
+    }
+
+    private boolean hasMessage(BindingResult result, String expectedMessage) {
+        return result.getAllErrors().stream()
+                .anyMatch(error -> expectedMessage.equals(error.getDefaultMessage()));
     }
 
     @Test
@@ -74,8 +80,13 @@ class ActivitiesImagesModelTest {
         BindingResult result = new BeanPropertyBindingResult(model, "activitiesImagesModel");
         validator.validate(model, result);
 
-        assertTrue(result.hasErrors(), "Deveria apresentar erro de nome vazio");
+        assertTrue(result.hasErrors(), "Deve haver erro de validação para nome vazio");
+        assertTrue(
+                hasMessage(result, "Nome da imagem não pode estar vazio!"),
+                "Mensagem esperada: 'Nome da imagem não pode estar vazio!'"
+        );
     }
+
 
 
     @Test
@@ -88,6 +99,10 @@ class ActivitiesImagesModelTest {
         validator.validate(model, result);
 
         assertTrue(result.hasErrors(), "Deveria apresentar erro de nome curto");
+        assertTrue(
+                hasMessage(result, "Nome da imagem deve ter entre 3 e 50 caracteres."),
+                "Mensagem esperada: 'Nome da imagem deve ter entre 3 e 50 caracteres.'"
+        );
     }
 
     @Test
@@ -100,6 +115,10 @@ class ActivitiesImagesModelTest {
         validator.validate(model, result);
 
         assertTrue(result.hasErrors(), "Deveria apresentar erro de nome longo");
+        assertTrue(
+                hasMessage(result, "Nome da imagem deve ter entre 3 e 50 caracteres."),
+                "Mensagem esperada: 'Nome da imagem deve ter entre 3 e 50 caracteres.'"
+        );
     }
 
 }
