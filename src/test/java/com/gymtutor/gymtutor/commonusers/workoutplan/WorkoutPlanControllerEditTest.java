@@ -143,7 +143,7 @@ class WorkoutPlanControllerEditTest {
                         org.hamcrest.Matchers.hasProperty("fieldErrors",
                                 org.hamcrest.Matchers.hasItem(
                                         org.hamcrest.Matchers.hasProperty("defaultMessage",
-                                                org.hamcrest.Matchers.is("Nome não pode estar vazio!"))
+                                                org.hamcrest.Matchers.is("Descrição não pode estar vazia!"))
                                 )
                         )
                 ));
@@ -164,7 +164,7 @@ class WorkoutPlanControllerEditTest {
                         org.hamcrest.Matchers.hasProperty("fieldErrors",
                                 org.hamcrest.Matchers.hasItem(
                                         org.hamcrest.Matchers.hasProperty("defaultMessage",
-                                                org.hamcrest.Matchers.is("Preencha este campo."))
+                                                org.hamcrest.Matchers.is("Dias não pode estar vazio!"))
                                 )
                         )
                 ));
