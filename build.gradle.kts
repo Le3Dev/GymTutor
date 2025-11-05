@@ -2,6 +2,7 @@ plugins {
 	java
 	id("org.springframework.boot") version "3.5.0" // pode atualizar de 3.4.4 se quiser
 	id("io.spring.dependency-management") version "1.1.7"
+	jacoco
 }
 
 group = "com.gymtutor"
@@ -47,7 +48,27 @@ dependencies {
 
 }
 
-// Testes com JUnit Platform
+
+// --- CONFIGURAÇÃO DO JACOCO ---
+
+// 1. Configura a tarefa jacocoTestReport
+tasks.named<JacocoReport>("jacocoTestReport") {
+	// Garante que os testes rodem antes de gerar o relatório
+	dependsOn(tasks.test)
+
+	reports {
+		// Gera o relatório no formato XML (útil para integração contínua)
+		xml.required.set(true)
+		// Não precisamos do formato CSV
+		csv.required.set(false)
+		// Gera o relatório HTML para fácil visualização e captura do percentual
+		html.required.set(true)
+	}
+}
+
+// 2. Configura a tarefa 'test' (corrigido e simplificado)
 tasks.withType<Test> {
 	useJUnitPlatform()
+	// Adiciona o jacocoTestReport como uma tarefa que deve ser executada após o 'test'
+	finalizedBy(tasks.jacocoTestReport)
 }
